@@ -1,5 +1,6 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
+import cors from 'cors';
 
 import schema from "./graphql/schemasMap";
 import { todos } from './database/mockdb';
@@ -8,6 +9,8 @@ import { todos } from './database/mockdb';
     const PORT = 4000;
 
     const app = express();
+    app.use(cors());
+
     const server = new ApolloServer({
         schema,
         context: {
