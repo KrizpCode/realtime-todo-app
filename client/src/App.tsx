@@ -1,21 +1,21 @@
-import React from 'react';
+import { useTodoListQuery } from './generated/graphql';
+
 import './App.css';
-import { useTodosListQuery } from './generated/graphql';
 import Todos from './components/Todos/Todos';
+import AddTodo from './components/AddTodo/AddTodo';
 
 function App() {
-  const { data, error, loading } = useTodosListQuery();
+  const { data, error, loading } = useTodoListQuery();
 
   if(loading) return <div>Loading...</div>
-
-  if(error || !data) {
-    console.error(error);
-    return <div>Error</div>
-  }
+  if(error) return <div>{`Error: ${error.message}`}</div>
+  if(!data) return <div>No data found</div>
 
   return (
     <div className="App">
-        {data && <Todos data={data}/>}
+      <h1>Add a new Todo</h1>
+      <AddTodo />
+      {data && <Todos data={data}/>}
     </div>
   );
 }

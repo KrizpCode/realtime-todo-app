@@ -1,7 +1,27 @@
+.todosList {
+    list-style-type: none;
+}
+
+.todoList--item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.todoList--remove-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
 .completed {
-    color: green
+    text-decoration: line-through;
+    opacity: 50%;
 }
 
 .incomplete {
-    color: red
+    /* color: red */
 }
