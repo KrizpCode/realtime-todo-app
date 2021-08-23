@@ -40,6 +40,11 @@ export type Query = {
   todos: Array<Todo>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  todos: Array<Todo>;
+};
+
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
@@ -121,6 +126,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Query: ResolverTypeWrapper<{}>;
+  Subscription: ResolverTypeWrapper<{}>;
   Todo: ResolverTypeWrapper<Todo>;
 };
 
@@ -131,6 +137,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
   Query: {};
+  Subscription: {};
   Todo: Todo;
 };
 
@@ -144,6 +151,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   todos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
 };
 
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
+  todos?: SubscriptionResolver<Array<ResolversTypes['Todo']>, "todos", ParentType, ContextType>;
+};
+
 export type TodoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -154,6 +165,7 @@ export type TodoResolvers<ContextType = any, ParentType extends ResolversParentT
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;
 };
 

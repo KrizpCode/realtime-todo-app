@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
+import './AddTodo.css'
 import { useAddTodoMutation } from '../../generated/graphql';
 
 const AddTodo = () => {
@@ -9,9 +10,15 @@ const AddTodo = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        addTodo({ variables: { title: title } });
+
+        if (!title) return
+        
+        addTodo({
+            variables: {
+                title: title
+            }
+        });
         setTitle('');
-        window.location.reload();
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -19,11 +26,14 @@ const AddTodo = () => {
     }
 
     return (
+        <>
+        <h1 className="update-title">Todo-List</h1>
         <form
             className="add-todo-form"
             onSubmit={ handleSubmit }>
             <input
                 className="add-todo-form--input-title"
+                placeholder="Add Todo"
                 type="text"
                 name="title"
                 id="inputTitle"
@@ -31,11 +41,12 @@ const AddTodo = () => {
                 value={title}
             />
             <input
-                className="add-todo-form--submit-button"
+                className={`add-todo-form--submit-button ${title && 'active'}`}
                 type="submit"
-                value="Add Todo"
+                value="+"
             />
         </form>
+        </>
     )
 }
 

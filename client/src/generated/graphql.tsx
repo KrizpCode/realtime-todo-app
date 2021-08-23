@@ -41,6 +41,11 @@ export type Query = {
   todos: Array<Todo>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  todos: Array<Todo>;
+};
+
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
@@ -59,6 +64,11 @@ export type TodoListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TodoListQuery = { __typename?: 'Query', todos: Array<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
+
+export type NewTodoSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewTodoSubscription = { __typename?: 'Subscription', todos: Array<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
 
 export type RemoveTodoMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -146,6 +156,37 @@ export function useTodoListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<T
 export type TodoListQueryHookResult = ReturnType<typeof useTodoListQuery>;
 export type TodoListLazyQueryHookResult = ReturnType<typeof useTodoListLazyQuery>;
 export type TodoListQueryResult = Apollo.QueryResult<TodoListQuery, TodoListQueryVariables>;
+export const NewTodoDocument = gql`
+    subscription newTodo {
+  todos {
+    id
+    title
+    completed
+  }
+}
+    `;
+
+/**
+ * __useNewTodoSubscription__
+ *
+ * To run a query within a React component, call `useNewTodoSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewTodoSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewTodoSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewTodoSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewTodoSubscription, NewTodoSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<NewTodoSubscription, NewTodoSubscriptionVariables>(NewTodoDocument, options);
+      }
+export type NewTodoSubscriptionHookResult = ReturnType<typeof useNewTodoSubscription>;
+export type NewTodoSubscriptionResult = Apollo.SubscriptionResult<NewTodoSubscription>;
 export const RemoveTodoDocument = gql`
     mutation RemoveTodo($id: ID!) {
   removeTodo(id: $id)

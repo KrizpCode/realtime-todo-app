@@ -1,22 +1,26 @@
-import { useTodoListQuery } from './generated/graphql';
+// import { useTodoListQuery } from './generated/graphql';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import './App.css';
-import Todos from './components/Todos/Todos';
-import AddTodo from './components/AddTodo/AddTodo';
+import { HomePage } from './pages/HomePage/HomePage';
+import { LoginPage } from './pages/LoginPage/LoginPage';
+import { RegistrationPage } from './pages/RegistrationPage/RegistrationPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage/ForgotPasswordPage';
+import { UpdateProfilePage } from './pages/UpdateProfilePage/UpdateProfilePage';
 
-function App() {
-  const { data, error, loading } = useTodoListQuery();
-
-  if(loading) return <div>Loading...</div>
-  if(error) return <div>{`Error: ${error.message}`}</div>
-  if(!data) return <div>No data found</div>
-
+const App = () => {
   return (
-    <div className="App">
-      <h1>Add a new Todo</h1>
-      <AddTodo />
-      {data && <Todos data={data}/>}
-    </div>
+    <main className="main-wrapper">
+      <Router>
+        <Switch>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/login' component={LoginPage} />
+          <Route path='/registration' component={RegistrationPage} />
+          <Route path='/forgot-password' component={ForgotPasswordPage} />
+          <Route path='/update-profile' component={UpdateProfilePage} />
+        </Switch>
+      </Router>
+    </main>
   );
 }
 

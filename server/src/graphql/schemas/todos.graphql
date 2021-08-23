@@ -13,3 +13,7 @@ type Mutation {
 type Query {
     todos: [Todo!]!
 }
+
+type Subscription {
+    todos: [Todo!]!
+}

@@ -7,6 +7,6 @@ import resolvers from './resolversMap';
 
 const schema: GraphQLSchema = makeExecutableSchema({
     typeDefs: [todosTypeDefs],
-    resolvers
+    resolvers,
 });
 export default schema;

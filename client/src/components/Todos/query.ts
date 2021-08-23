@@ -10,6 +10,16 @@ const TODOS_QUERY = gql`
     }
 `
 
+const TODOS_SUBSCRIPTION = gql`
+    subscription newTodo {
+        todos {
+            id
+            title
+            completed
+        }
+    }
+`
+
 const REMOVE_TODO_MUTATION = gql`
     mutation RemoveTodo($id: ID!) {
         removeTodo(id: $id)
