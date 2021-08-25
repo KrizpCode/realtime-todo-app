@@ -1,5 +1,6 @@
 import React, { useRef, useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import Spinner from '../../components/Spinner/Spinner';
 import { AuthContext } from '../../context/AuthProvider';
 
 import './UpdateProfilePage.css'
@@ -19,7 +20,7 @@ export const UpdateProfilePage = () => {
         history.push('/login')
     }
 
-    let email;
+    let email: string = '';
     if (currentUser && currentUser.email !== null) {
         email = currentUser.email;
     }
@@ -30,6 +31,7 @@ export const UpdateProfilePage = () => {
         setLoading(true);
 
         if(passwordRef.current!.value !== confirmPasswordRef.current!.value) {
+            setLoading(false)
             return setErrorMessage('Passwords do not match')
         }
 
@@ -47,10 +49,19 @@ export const UpdateProfilePage = () => {
             history.push('/');
         }).catch(() => {
             setErrorMessage('Failed to update account, please try again.')
+            setLoading(false)
         }).finally(() => {
             setLoading(false);
         })
     };
+
+    if(loading) {
+        return (
+            <>
+                <Spinner loading={loading} />
+            </>
+        )
+    }
 
     return (
         <>

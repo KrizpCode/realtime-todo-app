@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthProvider';
 import './RegistrationPage.css';
 
 import { auth } from '../../config/firebase';
+import Spinner from '../../components/Spinner/Spinner';
 
 export const RegistrationPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -42,6 +43,14 @@ export const RegistrationPage = () => {
 
         setLoading(false);
     };
+
+    if(loading) {
+        return (
+            <>
+                <Spinner loading={loading} />
+            </>
+        )
+    }
 
     return (
         <>

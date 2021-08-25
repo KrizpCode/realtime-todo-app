@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthProvider';
 
 import { auth } from '../../config/firebase';
 import './LoginPage.css';
+import Spinner from '../../components/Spinner/Spinner';
 
 export const LoginPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -32,15 +33,23 @@ export const LoginPage = () => {
             history.push('/');
         } catch (error) {
             setErrorMessage(error.message);
+            setLoading(false)
         }
     };
+
+    if(loading) {
+        return (
+            <>
+                <Spinner loading={loading} />
+            </>
+        )
+    }
 
     return (
         <section className="login-container">
             <h1 className="login-title">Log In</h1>
             <form className="form" onSubmit={login}>
                 {errorMessage && <p className="error-text">{errorMessage}</p>}
-                {/* <label htmlFor="email">Email:</label> */}
                 <input
                     className="form__input"
                     type="email"
@@ -50,7 +59,6 @@ export const LoginPage = () => {
                     placeholder="Email"
                     required
                 />
-                {/* <label htmlFor="password">Password:</label> */}
                 <input
                     className="form__input"
                     type="password"

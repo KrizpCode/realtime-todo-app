@@ -19,59 +19,177 @@ export type Mutation = {
   addTodo?: Maybe<Todo>;
   removeTodo?: Maybe<Scalars['Boolean']>;
   updateTodo?: Maybe<Todo>;
+  addTodoList?: Maybe<TodoList>;
+  removeTodoList?: Maybe<Scalars['Boolean']>;
+  addMember?: Maybe<User>;
+  removeMember?: Maybe<Scalars['Boolean']>;
+  freezeList?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type MutationAddTodoArgs = {
+  listId: Scalars['ID'];
   title: Scalars['String'];
 };
 
 
 export type MutationRemoveTodoArgs = {
   id: Scalars['ID'];
+  listId: Scalars['ID'];
 };
 
 
 export type MutationUpdateTodoArgs = {
   id: Scalars['ID'];
+  listId: Scalars['ID'];
+};
+
+
+export type MutationAddTodoListArgs = {
+  title: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
+export type MutationRemoveTodoListArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationAddMemberArgs = {
+  id: Scalars['ID'];
+  email: Scalars['String'];
+};
+
+
+export type MutationRemoveMemberArgs = {
+  id: Scalars['ID'];
+  email: Scalars['String'];
+};
+
+
+export type MutationFreezeListArgs = {
+  id: Scalars['ID'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  todos: Array<Todo>;
+  todoListsByEmail?: Maybe<Array<Maybe<TodoList>>>;
+  userByEmail?: Maybe<User>;
+  todos?: Maybe<Array<Todo>>;
+};
+
+
+export type QueryTodoListsByEmailArgs = {
+  email: Scalars['String'];
+};
+
+
+export type QueryUserByEmailArgs = {
+  email: Scalars['String'];
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
-  todos: Array<Todo>;
+  todoListById?: Maybe<TodoList>;
+  todoLists?: Maybe<Array<TodoList>>;
+  todosByListId: TodoList;
+};
+
+
+export type SubscriptionTodoListByIdArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type SubscriptionTodoListsArgs = {
+  email: Scalars['String'];
+};
+
+
+export type SubscriptionTodosByListIdArgs = {
+  listId: Scalars['ID'];
 };
 
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
+  listId: Scalars['ID'];
   title: Scalars['String'];
   completed: Scalars['Boolean'];
 };
 
+export type TodoList = {
+  __typename?: 'TodoList';
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  admin: User;
+  members: Array<User>;
+  frozen: Scalars['Boolean'];
+  todos?: Maybe<Array<Todo>>;
+};
+
+export type User = {
+  __typename?: 'User';
+  email: Scalars['String'];
+};
+
+export type AddMemberMutationVariables = Exact<{
+  id: Scalars['ID'];
+  email: Scalars['String'];
+}>;
+
+
+export type AddMemberMutation = { __typename?: 'Mutation', addMember?: Maybe<{ __typename?: 'User', email: string }> };
+
 export type AddTodoMutationVariables = Exact<{
+  listId: Scalars['ID'];
   title: Scalars['String'];
 }>;
 
 
 export type AddTodoMutation = { __typename?: 'Mutation', addTodo?: Maybe<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
 
-export type TodoListQueryVariables = Exact<{ [key: string]: never; }>;
+export type AddTodoListMutationVariables = Exact<{
+  title: Scalars['String'];
+  email: Scalars['String'];
+}>;
 
 
-export type TodoListQuery = { __typename?: 'Query', todos: Array<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
+export type AddTodoListMutation = { __typename?: 'Mutation', addTodoList?: Maybe<{ __typename?: 'TodoList', title: string }> };
 
-export type NewTodoSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type RemoveMemberMutationVariables = Exact<{
+  id: Scalars['ID'];
+  email: Scalars['String'];
+}>;
 
 
-export type NewTodoSubscription = { __typename?: 'Subscription', todos: Array<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
+export type RemoveMemberMutation = { __typename?: 'Mutation', removeMember?: Maybe<boolean> };
+
+export type TodoListByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type TodoListByEmailQuery = { __typename?: 'Query', todoListsByEmail?: Maybe<Array<Maybe<{ __typename?: 'TodoList', id: string, title: string, admin: { __typename?: 'User', email: string }, members: Array<{ __typename?: 'User', email: string }> }>>> };
+
+export type NewTodoListsSubscriptionVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type NewTodoListsSubscription = { __typename?: 'Subscription', todoLists?: Maybe<Array<{ __typename?: 'TodoList', id: string, title: string, admin: { __typename?: 'User', email: string }, members: Array<{ __typename?: 'User', email: string }> }>> };
+
+export type RemoveTodoListMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type RemoveTodoListMutation = { __typename?: 'Mutation', removeTodoList?: Maybe<boolean> };
 
 export type RemoveTodoMutationVariables = Exact<{
   id: Scalars['ID'];
+  listId: Scalars['ID'];
 }>;
 
 
@@ -79,15 +197,57 @@ export type RemoveTodoMutation = { __typename?: 'Mutation', removeTodo?: Maybe<b
 
 export type UpdateTodoMutationVariables = Exact<{
   id: Scalars['ID'];
+  listId: Scalars['ID'];
 }>;
 
 
 export type UpdateTodoMutation = { __typename?: 'Mutation', updateTodo?: Maybe<{ __typename?: 'Todo', id: string, title: string, completed: boolean }> };
 
+export type TodosByListIdSubscriptionVariables = Exact<{
+  listId: Scalars['ID'];
+}>;
 
+
+export type TodosByListIdSubscription = { __typename?: 'Subscription', todosByListId: { __typename?: 'TodoList', id: string, title: string, frozen: boolean, members: Array<{ __typename?: 'User', email: string }>, todos?: Maybe<Array<{ __typename?: 'Todo', id: string, listId: string, title: string, completed: boolean }>>, admin: { __typename?: 'User', email: string } } };
+
+
+export const AddMemberDocument = gql`
+    mutation AddMember($id: ID!, $email: String!) {
+  addMember(id: $id, email: $email) {
+    email
+  }
+}
+    `;
+export type AddMemberMutationFn = Apollo.MutationFunction<AddMemberMutation, AddMemberMutationVariables>;
+
+/**
+ * __useAddMemberMutation__
+ *
+ * To run a mutation, you first call `useAddMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMemberMutation, { data, loading, error }] = useAddMemberMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useAddMemberMutation(baseOptions?: Apollo.MutationHookOptions<AddMemberMutation, AddMemberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddMemberMutation, AddMemberMutationVariables>(AddMemberDocument, options);
+      }
+export type AddMemberMutationHookResult = ReturnType<typeof useAddMemberMutation>;
+export type AddMemberMutationResult = Apollo.MutationResult<AddMemberMutation>;
+export type AddMemberMutationOptions = Apollo.BaseMutationOptions<AddMemberMutation, AddMemberMutationVariables>;
 export const AddTodoDocument = gql`
-    mutation AddTodo($title: String!) {
-  addTodo(title: $title) {
+    mutation AddTodo($listId: ID!, $title: String!) {
+  addTodo(listId: $listId, title: $title) {
     id
     title
     completed
@@ -109,6 +269,7 @@ export type AddTodoMutationFn = Apollo.MutationFunction<AddTodoMutation, AddTodo
  * @example
  * const [addTodoMutation, { data, loading, error }] = useAddTodoMutation({
  *   variables: {
+ *      listId: // value for 'listId'
  *      title: // value for 'title'
  *   },
  * });
@@ -120,76 +281,185 @@ export function useAddTodoMutation(baseOptions?: Apollo.MutationHookOptions<AddT
 export type AddTodoMutationHookResult = ReturnType<typeof useAddTodoMutation>;
 export type AddTodoMutationResult = Apollo.MutationResult<AddTodoMutation>;
 export type AddTodoMutationOptions = Apollo.BaseMutationOptions<AddTodoMutation, AddTodoMutationVariables>;
-export const TodoListDocument = gql`
-    query TodoList {
-  todos {
+export const AddTodoListDocument = gql`
+    mutation AddTodoList($title: String!, $email: String!) {
+  addTodoList(title: $title, email: $email) {
+    title
+  }
+}
+    `;
+export type AddTodoListMutationFn = Apollo.MutationFunction<AddTodoListMutation, AddTodoListMutationVariables>;
+
+/**
+ * __useAddTodoListMutation__
+ *
+ * To run a mutation, you first call `useAddTodoListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTodoListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTodoListMutation, { data, loading, error }] = useAddTodoListMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useAddTodoListMutation(baseOptions?: Apollo.MutationHookOptions<AddTodoListMutation, AddTodoListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddTodoListMutation, AddTodoListMutationVariables>(AddTodoListDocument, options);
+      }
+export type AddTodoListMutationHookResult = ReturnType<typeof useAddTodoListMutation>;
+export type AddTodoListMutationResult = Apollo.MutationResult<AddTodoListMutation>;
+export type AddTodoListMutationOptions = Apollo.BaseMutationOptions<AddTodoListMutation, AddTodoListMutationVariables>;
+export const RemoveMemberDocument = gql`
+    mutation RemoveMember($id: ID!, $email: String!) {
+  removeMember(id: $id, email: $email)
+}
+    `;
+export type RemoveMemberMutationFn = Apollo.MutationFunction<RemoveMemberMutation, RemoveMemberMutationVariables>;
+
+/**
+ * __useRemoveMemberMutation__
+ *
+ * To run a mutation, you first call `useRemoveMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMemberMutation, { data, loading, error }] = useRemoveMemberMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useRemoveMemberMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMemberMutation, RemoveMemberMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveMemberMutation, RemoveMemberMutationVariables>(RemoveMemberDocument, options);
+      }
+export type RemoveMemberMutationHookResult = ReturnType<typeof useRemoveMemberMutation>;
+export type RemoveMemberMutationResult = Apollo.MutationResult<RemoveMemberMutation>;
+export type RemoveMemberMutationOptions = Apollo.BaseMutationOptions<RemoveMemberMutation, RemoveMemberMutationVariables>;
+export const TodoListByEmailDocument = gql`
+    query TodoListByEmail($email: String!) {
+  todoListsByEmail(email: $email) {
     id
     title
-    completed
+    admin {
+      email
+    }
+    members {
+      email
+    }
   }
 }
     `;
 
 /**
- * __useTodoListQuery__
+ * __useTodoListByEmailQuery__
  *
- * To run a query within a React component, call `useTodoListQuery` and pass it any options that fit your needs.
- * When your component renders, `useTodoListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useTodoListByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTodoListByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useTodoListQuery({
+ * const { data, loading, error } = useTodoListByEmailQuery({
  *   variables: {
+ *      email: // value for 'email'
  *   },
  * });
  */
-export function useTodoListQuery(baseOptions?: Apollo.QueryHookOptions<TodoListQuery, TodoListQueryVariables>) {
+export function useTodoListByEmailQuery(baseOptions: Apollo.QueryHookOptions<TodoListByEmailQuery, TodoListByEmailQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TodoListQuery, TodoListQueryVariables>(TodoListDocument, options);
+        return Apollo.useQuery<TodoListByEmailQuery, TodoListByEmailQueryVariables>(TodoListByEmailDocument, options);
       }
-export function useTodoListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TodoListQuery, TodoListQueryVariables>) {
+export function useTodoListByEmailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TodoListByEmailQuery, TodoListByEmailQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TodoListQuery, TodoListQueryVariables>(TodoListDocument, options);
+          return Apollo.useLazyQuery<TodoListByEmailQuery, TodoListByEmailQueryVariables>(TodoListByEmailDocument, options);
         }
-export type TodoListQueryHookResult = ReturnType<typeof useTodoListQuery>;
-export type TodoListLazyQueryHookResult = ReturnType<typeof useTodoListLazyQuery>;
-export type TodoListQueryResult = Apollo.QueryResult<TodoListQuery, TodoListQueryVariables>;
-export const NewTodoDocument = gql`
-    subscription newTodo {
-  todos {
+export type TodoListByEmailQueryHookResult = ReturnType<typeof useTodoListByEmailQuery>;
+export type TodoListByEmailLazyQueryHookResult = ReturnType<typeof useTodoListByEmailLazyQuery>;
+export type TodoListByEmailQueryResult = Apollo.QueryResult<TodoListByEmailQuery, TodoListByEmailQueryVariables>;
+export const NewTodoListsDocument = gql`
+    subscription newTodoLists($email: String!) {
+  todoLists(email: $email) {
     id
     title
-    completed
+    admin {
+      email
+    }
+    members {
+      email
+    }
   }
 }
     `;
 
 /**
- * __useNewTodoSubscription__
+ * __useNewTodoListsSubscription__
  *
- * To run a query within a React component, call `useNewTodoSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewTodoSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useNewTodoListsSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewTodoListsSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNewTodoSubscription({
+ * const { data, loading, error } = useNewTodoListsSubscription({
  *   variables: {
+ *      email: // value for 'email'
  *   },
  * });
  */
-export function useNewTodoSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewTodoSubscription, NewTodoSubscriptionVariables>) {
+export function useNewTodoListsSubscription(baseOptions: Apollo.SubscriptionHookOptions<NewTodoListsSubscription, NewTodoListsSubscriptionVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewTodoSubscription, NewTodoSubscriptionVariables>(NewTodoDocument, options);
+        return Apollo.useSubscription<NewTodoListsSubscription, NewTodoListsSubscriptionVariables>(NewTodoListsDocument, options);
       }
-export type NewTodoSubscriptionHookResult = ReturnType<typeof useNewTodoSubscription>;
-export type NewTodoSubscriptionResult = Apollo.SubscriptionResult<NewTodoSubscription>;
+export type NewTodoListsSubscriptionHookResult = ReturnType<typeof useNewTodoListsSubscription>;
+export type NewTodoListsSubscriptionResult = Apollo.SubscriptionResult<NewTodoListsSubscription>;
+export const RemoveTodoListDocument = gql`
+    mutation RemoveTodoList($id: ID!) {
+  removeTodoList(id: $id)
+}
+    `;
+export type RemoveTodoListMutationFn = Apollo.MutationFunction<RemoveTodoListMutation, RemoveTodoListMutationVariables>;
+
+/**
+ * __useRemoveTodoListMutation__
+ *
+ * To run a mutation, you first call `useRemoveTodoListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTodoListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTodoListMutation, { data, loading, error }] = useRemoveTodoListMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveTodoListMutation(baseOptions?: Apollo.MutationHookOptions<RemoveTodoListMutation, RemoveTodoListMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveTodoListMutation, RemoveTodoListMutationVariables>(RemoveTodoListDocument, options);
+      }
+export type RemoveTodoListMutationHookResult = ReturnType<typeof useRemoveTodoListMutation>;
+export type RemoveTodoListMutationResult = Apollo.MutationResult<RemoveTodoListMutation>;
+export type RemoveTodoListMutationOptions = Apollo.BaseMutationOptions<RemoveTodoListMutation, RemoveTodoListMutationVariables>;
 export const RemoveTodoDocument = gql`
-    mutation RemoveTodo($id: ID!) {
-  removeTodo(id: $id)
+    mutation RemoveTodo($id: ID!, $listId: ID!) {
+  removeTodo(listId: $listId, id: $id)
 }
     `;
 export type RemoveTodoMutationFn = Apollo.MutationFunction<RemoveTodoMutation, RemoveTodoMutationVariables>;
@@ -208,6 +478,7 @@ export type RemoveTodoMutationFn = Apollo.MutationFunction<RemoveTodoMutation, R
  * const [removeTodoMutation, { data, loading, error }] = useRemoveTodoMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      listId: // value for 'listId'
  *   },
  * });
  */
@@ -219,8 +490,8 @@ export type RemoveTodoMutationHookResult = ReturnType<typeof useRemoveTodoMutati
 export type RemoveTodoMutationResult = Apollo.MutationResult<RemoveTodoMutation>;
 export type RemoveTodoMutationOptions = Apollo.BaseMutationOptions<RemoveTodoMutation, RemoveTodoMutationVariables>;
 export const UpdateTodoDocument = gql`
-    mutation UpdateTodo($id: ID!) {
-  updateTodo(id: $id) {
+    mutation UpdateTodo($id: ID!, $listId: ID!) {
+  updateTodo(listId: $listId, id: $id) {
     id
     title
     completed
@@ -243,6 +514,7 @@ export type UpdateTodoMutationFn = Apollo.MutationFunction<UpdateTodoMutation, U
  * const [updateTodoMutation, { data, loading, error }] = useUpdateTodoMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      listId: // value for 'listId'
  *   },
  * });
  */
@@ -253,3 +525,47 @@ export function useUpdateTodoMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateTodoMutationHookResult = ReturnType<typeof useUpdateTodoMutation>;
 export type UpdateTodoMutationResult = Apollo.MutationResult<UpdateTodoMutation>;
 export type UpdateTodoMutationOptions = Apollo.BaseMutationOptions<UpdateTodoMutation, UpdateTodoMutationVariables>;
+export const TodosByListIdDocument = gql`
+    subscription todosByListId($listId: ID!) {
+  todosByListId(listId: $listId) {
+    id
+    title
+    members {
+      email
+    }
+    todos {
+      id
+      listId
+      title
+      completed
+    }
+    admin {
+      email
+    }
+    frozen
+  }
+}
+    `;
+
+/**
+ * __useTodosByListIdSubscription__
+ *
+ * To run a query within a React component, call `useTodosByListIdSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTodosByListIdSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTodosByListIdSubscription({
+ *   variables: {
+ *      listId: // value for 'listId'
+ *   },
+ * });
+ */
+export function useTodosByListIdSubscription(baseOptions: Apollo.SubscriptionHookOptions<TodosByListIdSubscription, TodosByListIdSubscriptionVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useSubscription<TodosByListIdSubscription, TodosByListIdSubscriptionVariables>(TodosByListIdDocument, options);
+      }
+export type TodosByListIdSubscriptionHookResult = ReturnType<typeof useTodosByListIdSubscription>;
+export type TodosByListIdSubscriptionResult = Apollo.SubscriptionResult<TodosByListIdSubscription>;

@@ -1,19 +1,42 @@
+type TodoList {
+    id: ID!
+    title: String!
+    admin: User!
+    members: [User!]!
+    frozen: Boolean!
+    todos: [Todo!]
+}
+
 type Todo {
     id: ID!
+    listId: ID!
     title: String!
     completed: Boolean!
 }
 
+type User {
+    email: String!
+}
+
 type Mutation {
-    addTodo(title: String!): Todo
-    removeTodo(id: ID!): Boolean
-    updateTodo(id: ID!): Todo
+    addTodo(listId: ID!, title: String!): Todo
+    removeTodo(id: ID!, listId: ID!): Boolean
+    updateTodo(id: ID!, listId: ID!): Todo
+    addTodoList(title: String!, email: String!): TodoList
+    removeTodoList(id: ID!): Boolean
+    addMember(id: ID!, email: String!): User
+    removeMember(id: ID!, email: String!): Boolean
+    freezeList(id: ID!): Boolean
 }
 
 type Query {
-    todos: [Todo!]!
+    todoListsByEmail(email: String!): [TodoList]
+    userByEmail(email: String!): User
+    todos: [Todo!]
 }
 
 type Subscription {
-    todos: [Todo!]!
+    todoListById(id: ID!): TodoList
+    todoLists(email: String!): [TodoList!]
+    todosByListId(listId: ID!): TodoList!
 }

@@ -1,11 +1,12 @@
-.todosList {
+.todosList-item {
     list-style-type: none;
     width: 500px;
     display: flex;
     flex-direction: column;
+    border-top: 1px solid #96CDF1;
 }
 
-.todoList--item {
+.todosList-item--item {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -14,15 +15,15 @@
     border-bottom: 1px solid #96CDF1;
 }
 
-.todoList--item-text {
+.todosList-item--item-text {
     width: 80%;
 }
 
-.todoList--item-checkbox {
+.todosList-item--item-checkbox {
     width: 10%;
 }
 
-.todoList--remove-button {
+.todosList-item--remove-button {
     background: none;
     border: none;
     font-size: 18px;

@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Spinner from '../../components/Spinner/Spinner';
 
 import { auth } from '../../config/firebase';
 import './ForgotPasswordPage.css';
@@ -26,6 +27,14 @@ export const ForgotPasswordPage = () => {
 
         setLoading(false);
     };
+
+    if(loading) {
+        return (
+            <>
+                <Spinner loading={loading} />
+            </>
+        )
+    }
 
     return (
         <>

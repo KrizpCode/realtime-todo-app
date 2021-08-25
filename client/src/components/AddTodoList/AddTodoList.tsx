@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
-import './AddTodo.css'
-import { useAddTodoMutation } from '../../generated/graphql';
+import './AddTodoList.css'
+import { useAddTodoListMutation } from '../../generated/graphql';
+import { AuthContext } from '../../context/AuthProvider';
 
-import { TodoList } from '../../generated/graphql';
-import { auth } from '../../config/firebase';
-
-interface Props {
-    id: TodoList["id"],
-    listName: TodoList["title"]
-}
-
-const AddTodo: React.FC<Props> = ({ id, listName }) => {
+const AddTodoList = () => {
     const [title, setTitle] = useState('');
+    const currentUser = useContext(AuthContext);
 
-    const [addTodo] = useAddTodoMutation();
+    const [addTodoList] = useAddTodoListMutation();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
 
-        if (!title) return
+        if (!title || !currentUser?.email) return
         
-        addTodo({
+        addTodoList({
             variables: {
-                listId: id,
-                title
+                email: currentUser.email,
+                title: title
             }
         });
         setTitle('');
@@ -36,13 +30,12 @@ const AddTodo: React.FC<Props> = ({ id, listName }) => {
 
     return (
         <>
-            <h1 className="update-title">{listName}</h1>
         <form
             className="add-todo-form"
             onSubmit={ handleSubmit }>
             <input
                 className="add-todo-form--input-title"
-                placeholder="Add Todo"
+                placeholder="Add To-Do List"
                 type="text"
                 name="title"
                 id="inputTitle"
@@ -59,4 +52,4 @@ const AddTodo: React.FC<Props> = ({ id, listName }) => {
     )
 }
 
-export default AddTodo
+export default AddTodoList;
