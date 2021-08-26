@@ -11,10 +11,9 @@ import { PubSub } from 'graphql-subscriptions';
 import schema from "./graphql/schemasMap";
 import { todoLists } from './database/db';
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 const pubsub = new PubSub();
-
 const apolloServer = new ApolloServer({
 	schema,
 	context: {
@@ -54,6 +53,10 @@ server.on('upgrade', (req, _, head) => {
 	wss.emit('connection', ws, req);
 	});
 });
+
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'));
+}
 
 server.listen(PORT, () => {
 	console.log(`\n🚀 GraphQL is now running on http://localhost:${PORT}/graphql`)
