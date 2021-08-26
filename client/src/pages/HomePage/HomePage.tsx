@@ -6,7 +6,6 @@ import { useNewTodoListsSubscription } from '../../generated/graphql';
 import AddTodoList from '../../components/AddTodoList/AddTodoList';
 import TodoLists from '../../components/TodoLists/TodoLists';
 
-import './HomePage.css'
 import Spinner from '../../components/Spinner/Spinner';
 
 export const HomePage = () => {

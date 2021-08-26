@@ -11,19 +11,21 @@ import NavBar from './components/NavBar/NavBar';
 
 const App = () => {
   return (
-    <main className="main-wrapper">
+    <>
       <Router>
         <NavBar />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/todo/:id' component={TodoPage} />
-          <Route path='/login' component={LoginPage} />
-          <Route path='/registration' component={RegistrationPage} />
-          <Route path='/forgot-password' component={ForgotPasswordPage} />
-          <Route path='/update-profile' component={UpdateProfilePage} />
-        </Switch>
+        <main className="main-wrapper">
+          <Switch>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/todo/:id' component={TodoPage} />
+            <Route path='/login' component={LoginPage} />
+            <Route path='/registration' component={RegistrationPage} />
+            <Route path='/forgot-password' component={ForgotPasswordPage} />
+            <Route path='/update-profile' component={UpdateProfilePage} />
+          </Switch>
+        </main>
       </Router>
-    </main>
+    </>
   );
 }
 

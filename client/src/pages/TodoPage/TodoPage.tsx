@@ -6,7 +6,6 @@ import Todos from '../../components/Todos/Todos';
 import { useParams } from 'react-router-dom';
 import { useTodosByListIdSubscription  } from '../../generated/graphql';
 
-import './TodoPage.css'
 import Spinner from '../../components/Spinner/Spinner';
 import AddMember from '../../components/AddMember/AddMember';
 import Members from '../../components/Members/Members';
@@ -35,9 +34,7 @@ export const TodoPage = () => {
         )
     }
 
-    console.log(currentUser!.email)
-
-    if(!data || !data.todosByListId.members.find(member => member.email === currentUser!.email)) {
+    if(!data || !data.todosByListId.members.find(member => member.email === currentUser?.email)) {
         return (
             <>
                 <Link to="/">- Go back -</Link>
@@ -49,10 +46,12 @@ export const TodoPage = () => {
 
     return (
         <>
-            <AddMember id={id} />
+            <h1 className="margin-bottom-10px text-color-gray">{data.todosByListId.title}</h1>
+            {data.todosByListId.admin.email === currentUser?.email && <AddMember id={id} />}
+            <h2 className="margin-top-10px text-color-gray">Members</h2>
             {data && <Members members={data.todosByListId.members} id={id} admin={data.todosByListId.admin} />}
-            <AddTodo id={id} listName={data.todosByListId.title} />
-            {data && <Todos todos={data.todosByListId.todos}/>}
+            <AddTodo id={id} />
+            {data && <Todos todos={data.todosByListId.todos} currentUser={currentUser?.email}/>}
         </>
     )
 }

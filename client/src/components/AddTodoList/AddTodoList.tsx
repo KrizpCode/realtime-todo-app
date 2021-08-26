@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 
-import './AddTodoList.css'
 import { useAddTodoListMutation } from '../../generated/graphql';
 import { AuthContext } from '../../context/AuthProvider';
 
@@ -34,7 +33,7 @@ const AddTodoList = () => {
             className="add-todo-form"
             onSubmit={ handleSubmit }>
             <input
-                className="add-todo-form--input-title"
+                className="form__input add-todo-input"
                 placeholder="Add To-Do List"
                 type="text"
                 name="title"
@@ -43,7 +42,7 @@ const AddTodoList = () => {
                 value={title}
             />
             <input
-                className={`add-todo-form--submit-button ${title && 'active'}`}
+                className={`add-form--submit-button ${title && 'active'}`}
                 type="submit"
                 value="+"
             />

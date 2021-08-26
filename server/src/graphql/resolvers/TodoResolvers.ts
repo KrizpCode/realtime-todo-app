@@ -32,26 +32,6 @@ export const TodosResolvers: IResolvers = {
             return newTodo;
         },
 
-        addMember: (_: void, { id, email }: MutationAddMemberArgs, { todoLists }: { todoLists: TodoList[]}): (User | undefined) => {
-            const indexOfTodoList = todoLists.findIndex((todoList: TodoList) => todoList.id === id);
-            if (indexOfTodoList === -1) {
-                return
-            }
-
-            if(todoLists[indexOfTodoList].members.find(member => member.email === email)) {
-                return
-            }
-
-            const newMember: User = {
-                email
-            }
-
-            todoLists[indexOfTodoList].members.push(newMember)
-
-            subscribers.forEach(fn => fn());
-            return newMember;
-        },
-
         removeTodo: (_: void, { listId, id }: MutationRemoveTodoArgs, { todoLists }: { todoLists: TodoList[]}): Boolean => {
             const indexOfTodoList = todoLists.findIndex((todoList) => todoList.id === listId);
 
@@ -66,25 +46,6 @@ export const TodosResolvers: IResolvers = {
             }
 
             todoLists[indexOfTodoList].todos?.splice(indexOfTodo, 1);
-
-            subscribers.forEach(fn => fn());
-            return true;
-        },
-
-        removeMember: (_: void, { id, email }: MutationRemoveMemberArgs, { todoLists }: { todoLists: TodoList[]}): Boolean => {
-            const indexOfTodoList = todoLists.findIndex((todoList) => todoList.id === id);
-
-            if (indexOfTodoList === -1) {
-                return false
-            }
-
-            const indexOfTodo = todoLists[indexOfTodoList].members?.findIndex((member) => member.email === email)
-
-            if (indexOfTodo === -1) {
-                return false
-            }
-
-            todoLists[indexOfTodoList].members!.splice(indexOfTodo, 1);
 
             subscribers.forEach(fn => fn());
             return true;
@@ -111,7 +72,50 @@ export const TodosResolvers: IResolvers = {
             subscribers.forEach(fn => fn());
 
             return updatedTodo;
-        }
+        },
+
+        addMember: (_: void, { id, email }: MutationAddMemberArgs, { todoLists }: { todoLists: TodoList[]}): (User | undefined) => {
+            const indexOfTodoList = todoLists.findIndex((todoList: TodoList) => todoList.id === id);
+            if (indexOfTodoList === -1) {
+                return
+            }
+
+            if(todoLists[indexOfTodoList].members.find(member => member.email === email)) {
+                return
+            }
+
+            const newMember: User = {
+                email
+            }
+
+            todoLists[indexOfTodoList].members.push(newMember)
+
+            subscribers.forEach(fn => fn());
+            return newMember;
+        },
+
+        
+
+        removeMember: (_: void, { id, email }: MutationRemoveMemberArgs, { todoLists }: { todoLists: TodoList[]}): Boolean => {
+            const indexOfTodoList = todoLists.findIndex((todoList) => todoList.id === id);
+
+            if (indexOfTodoList === -1) {
+                return false
+            }
+
+            const indexOfTodo = todoLists[indexOfTodoList].members?.findIndex((member) => member.email === email)
+
+            if (indexOfTodo === -1) {
+                return false
+            }
+
+            todoLists[indexOfTodoList].members!.splice(indexOfTodo, 1);
+
+            subscribers.forEach(fn => fn());
+            return true;
+        },
+
+        
     },
 
     Subscription: {

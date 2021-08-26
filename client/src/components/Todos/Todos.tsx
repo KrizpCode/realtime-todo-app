@@ -1,11 +1,11 @@
 import { TodoList, useRemoveTodoMutation, useUpdateTodoMutation } from '../../generated/graphql';
-import './Todos.css';
 
 interface Props {
     todos: TodoList["todos"]
+    currentUser: string | null | undefined
 }
 
-const Todos: React.FC<Props> = ({ todos }) => {
+const Todos: React.FC<Props> = ({ todos, currentUser }) => {
     const [removeTodo] = useRemoveTodoMutation();
     const [updateTodo] = useUpdateTodoMutation();
 
@@ -14,23 +14,30 @@ const Todos: React.FC<Props> = ({ todos }) => {
     }
 
     return (
-        <ul className='todosList'>
+        <>
+        <ul className='todos-list'>
             {todos.map((todo, i) => (
-                <li key={i} className={`todoList--item ${todo.completed ? 'order-2' : 'order-1'}`}>
-                    <input className="todoList--item-checkbox" type="checkbox" name="completed" onChange={() => {
+                <li key={i} className={`todos-list__item ${todo.completed ? 'order-2' : 'order-1'}`}>
+                    <input className="todos-list__item-checkbox" checked={todo.completed} type="checkbox" name="completed" onChange={() => {
                             updateTodo({ variables: {
                                 id: todo.id,
                                 listId: todo.listId
                             }})}} />
-                    <h2 className={`todoList--item-text ${todo.completed ? 'completed' : 'incomplete'}`}>{todo.title}</h2>
+                    <p className={`todos-list__item-text ${todo.completed ? 'completed' : 'incomplete'}`}>{todo.title}</p>
                     <button
-                        className="todoList--remove-button"
+                        className="remove-button width-10"
                         onClick={(): void => {
                             removeTodo({ variables: { id: todo.id, listId: todo.listId } }); 
                         }}>X</button>
                 </li>
             ))}
         </ul>
+        <div className="text-color-gray">
+            <p>{todos.length > 0 
+                ? `${todos.filter(todo => todo.completed).length} out of ${todos.length} completed`
+                : 'Please add what needs to be done above'}</p>
+        </div>
+        </>
     )
 }
 

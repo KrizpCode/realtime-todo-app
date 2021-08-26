@@ -19,21 +19,23 @@ const Members: React.FC<Props> = ({ members, id, admin }) => {
     }
 
     return (
-        <ul className='membersList'>
+        <ul className='members-list'>
             {members.map((member, i) => (
-                <li key={i} className="membersList--item">
-                    <h4>{member.email}</h4>
+                <li key={i} className="members-list__item">
+                    <h4 className="members-list__item-text">{member.email}</h4>
                     {admin.email === currentUser?.email
                         && admin.email !== member.email ?
-                        <button
-                        className="todoList--remove-button"
-                        onClick={(): void => {
-                            removeTodo({ variables: {
-                                email: member.email,
-                                id
-                            }}); 
-                        }}>X</button>
-                    : ''}
+                            <button
+                                className="remove-button"
+                                onClick={(): void => {
+                                    removeTodo({
+                                        variables: {
+                                            email: member.email,
+                                            id
+                                        }
+                                    }); 
+                                }}>X</button>
+                        : ''}
                 </li>
             ))}
         </ul>

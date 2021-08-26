@@ -7,7 +7,9 @@ export const todoLists: TodoList[] = [
     {
         id: listId,
         title: 'Shopping List',
-        admin: {email: 'juhaniish@live.se'},
+        admin: {
+            email: 'juhaniish@live.se'
+        },
         members: [
             {
                 email: 'juhaniish@live.se'

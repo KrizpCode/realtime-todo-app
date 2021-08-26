@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import './AddMember.css'
 import { useAddMemberMutation } from '../../generated/graphql';
 
 import { TodoList } from '../../generated/graphql';
@@ -9,6 +8,8 @@ import { auth } from '../../config/firebase';
 interface Props {
     id: TodoList["id"]
 }
+
+const emailValidationRegEx = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
 
 const AddMember: React.FC<Props> = ({ id }) => {
@@ -24,10 +25,13 @@ const AddMember: React.FC<Props> = ({ id }) => {
         setMessage('')
         setErrorMessage('');
 
-        if (!email) return
-
         try {
+            if (!email || !emailValidationRegEx.test(email)) {
+                throw new Error('Please provide an valid email')
+            }
+
             const providers = await auth.fetchSignInMethodsForEmail(email)
+
             if (providers.length === 0) {
                 setErrorMessage('User does not exist');
                 return;
@@ -56,15 +60,14 @@ const AddMember: React.FC<Props> = ({ id }) => {
 
     return (
         <>
-        <h1 className="update-title">Members</h1>
-        {errorMessage && <p>{errorMessage}</p>}
-        {message && <p>{message}</p>}
+        {errorMessage && <p className="error-text">{errorMessage}</p>}
+        {message && <p className="success-text">{message}</p>}
         <form
-            className="add-member-form"
+            className="add-form"
             onSubmit={ handleSubmit }>
             <input
-                className="add-member-form--input-title"
-                placeholder="Add Members Email"
+                className="form__input"
+                placeholder="Add Email"
                 type="text"
                 name="title"
                 id="inputTitle"
@@ -72,7 +75,7 @@ const AddMember: React.FC<Props> = ({ id }) => {
                 value={email}
             />
             <input
-                className={`add-member-form--submit-button ${email && 'active'}`}
+                className={`add-form--submit-button ${email && 'active'}`}
                 type="submit"
                 value="+"
             />

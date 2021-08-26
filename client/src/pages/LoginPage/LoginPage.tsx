@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthProvider';
 
 import { auth } from '../../config/firebase';
-import './LoginPage.css';
 import Spinner from '../../components/Spinner/Spinner';
 
 export const LoginPage = () => {
@@ -46,8 +45,8 @@ export const LoginPage = () => {
     }
 
     return (
-        <section className="login-container">
-            <h1 className="login-title">Log In</h1>
+        <section className="form-container">
+            <h1 className="form-title">Log In</h1>
             <form className="form" onSubmit={login}>
                 {errorMessage && <p className="error-text">{errorMessage}</p>}
                 <input
@@ -68,10 +67,10 @@ export const LoginPage = () => {
                     placeholder="Password"
                     required
                 />
-                <p className="text-align-right"><Link to='/forgot-password'>Forgot password?</Link></p>
-                <input className="form__submit-button" type="submit" value="Sign In" disabled={loading} />
+                <p className="text-align-right text--small"><Link to='/forgot-password'>Forgot password?</Link></p>
+                <input className="form__submit-button margin-top-20px" type="submit" value="Sign In" disabled={loading} />
             </form>
-            <p className="text--small">Not a member? <Link to='/registration'>Create account</Link></p>
+            <p className="text--small margin-top-10px">Not a member? <Link to='/registration'>Create account</Link></p>
         </section>
     )
 }

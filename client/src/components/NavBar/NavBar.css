@@ -1,11 +1,11 @@
 .navbar {
     position: fixed;
+    top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    top: 0;
     width: 100%;
+    padding: 10px;
     background-color: #F6F6F8;
     border-bottom: 1px solid #96CDF1;
 }
@@ -16,11 +16,15 @@
     gap: 20px
 }
 
+.navbar__user-text {
+    font-size: 14px;
+    color: #595959;
+}
+
 .signout-button {
     border-radius: 5px;
     border: none;
     padding: 10px;
-    background-color: #96CDF1;
     background-color: #0771E7;
     font-weight: bold;
     color: white;
@@ -31,16 +35,21 @@
     cursor: pointer;
 }
 
-.user-text--small {
-    font-size: 14px;
-    color: #595959;
-}
-
 .navbar-icon {
     font-size: 40px;
+    color: #1077FF;
 }
 
-.navbar__edit-profile {
+.navbar-icon:hover {
+    color: #96CDF1;
+}
+
+.navbar__edit-profile-icon {
     font-size: 20px;
     margin-top: 5px;
+    color: #1077FF;
+}
+
+.navbar__edit-profile-icon:hover {
+    color: #96CDF1;
 }

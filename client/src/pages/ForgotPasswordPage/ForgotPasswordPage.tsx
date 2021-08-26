@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import Spinner from '../../components/Spinner/Spinner';
 
 import { auth } from '../../config/firebase';
-import './ForgotPasswordPage.css';
 
 export const ForgotPasswordPage = () => {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -38,15 +37,15 @@ export const ForgotPasswordPage = () => {
 
     return (
         <>
-            <section className='forgot-container'>
-                <h2 className="forgot-title">Password Reset</h2>
-                <form className='forgot-form' onSubmit={login}>
+            <section className='form-container'>
+                <h2 className="form-title">Password Reset</h2>
+                <form className='form' onSubmit={login}>
                     {errorMessage && <p className="error-text">{errorMessage}</p>}
                     {message && <p className="success-text">{message}</p>}
-                    <input className='forgot-form__input' placeholder="Email" type="email" ref={emailRef} name="email" id="email" required />
-                    <input className='forgot-form__submit-button margin-top-30px' type="submit" value="Reset Password" disabled={loading} />
+                    <input className='form__input' placeholder="Email" type="email" ref={emailRef} name="email" id="email" required />
+                    <input className='form__submit-button margin-top-20px' type="submit" value="Reset Password" disabled={loading} />
                 </form>
-                <p className="text--small">Already have an account? <Link to='/login'>Login</Link></p>
+                <p className="text--small margin-top-10px">Already have an account? <Link to='/login'>Login</Link></p>
             </section>
         </>
     )

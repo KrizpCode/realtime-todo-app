@@ -9,16 +9,12 @@ import ws from 'ws';
 import { PubSub } from 'graphql-subscriptions';
 
 import schema from "./graphql/schemasMap";
-import { todoLists } from './database/mockdb';
+import { todoLists } from './database/db';
 
 const PORT = 4000;
 
-// create express
-const app = express();
-app.use(cors());
 const pubsub = new PubSub();
 
-// create apollo server
 const apolloServer = new ApolloServer({
 	schema,
 	context: {
@@ -27,19 +23,17 @@ const apolloServer = new ApolloServer({
 	}
 });
 
+const app = express();
+app.use(cors());
 apolloServer.applyMiddleware({ app });
 
-// graphql-ws
 const graphqlWs = new ws.Server({ noServer: true });
 useServer({ schema }, graphqlWs);
 
-// subscriptions-transport-ws
 const subTransWs = new ws.Server({ noServer: true });
-
-// create http server
-const server = http.createServer(app);
 apolloServer.installSubscriptionHandlers(subTransWs);
 
+const server = http.createServer(app);
 // listen for upgrades and delegate requests according to the WS subprotocol
 server.on('upgrade', (req, _, head) => {
 	// extract websocket subprotocol from header
@@ -48,12 +42,11 @@ server.on('upgrade', (req, _, head) => {
 		? protocol
 		: protocol?.split(',').map((p) => p.trim());
 
-  // decide which websocket server to use
-	const wss =
-	protocols?.includes(GRAPHQL_WS) && // subscriptions-transport-ws subprotocol
-	!protocols.includes(GRAPHQL_TRANSPORT_WS_PROTOCOL) // graphql-ws subprotocol
-		? subTransWs
-		: graphqlWs;
+	// decide which websocket server to use
+	const wss = protocols?.includes(GRAPHQL_WS) 
+		&& !protocols.includes(GRAPHQL_TRANSPORT_WS_PROTOCOL)
+			? subTransWs
+			: graphqlWs;
 		// graphql-ws will welcome its own subprotocol and
 		// gracefully reject invalid ones. if the client supports
 		// both transports, graphql-ws will prevail

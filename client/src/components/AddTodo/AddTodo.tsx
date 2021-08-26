@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import './AddTodo.css'
 import { useAddTodoMutation } from '../../generated/graphql';
 
 import { TodoList } from '../../generated/graphql';
@@ -8,10 +7,9 @@ import { auth } from '../../config/firebase';
 
 interface Props {
     id: TodoList["id"],
-    listName: TodoList["title"]
 }
 
-const AddTodo: React.FC<Props> = ({ id, listName }) => {
+const AddTodo: React.FC<Props> = ({ id }) => {
     const [title, setTitle] = useState('');
 
     const [addTodo] = useAddTodoMutation();
@@ -36,12 +34,11 @@ const AddTodo: React.FC<Props> = ({ id, listName }) => {
 
     return (
         <>
-            <h1 className="update-title">{listName}</h1>
         <form
             className="add-todo-form"
             onSubmit={ handleSubmit }>
             <input
-                className="add-todo-form--input-title"
+                className="form__input add-todo-input"
                 placeholder="Add Todo"
                 type="text"
                 name="title"
@@ -50,7 +47,7 @@ const AddTodo: React.FC<Props> = ({ id, listName }) => {
                 value={title}
             />
             <input
-                className={`add-todo-form--submit-button ${title && 'active'}`}
+                className={`add-form--submit-button ${title && 'active'}`}
                 type="submit"
                 value="+"
             />
