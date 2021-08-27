@@ -23,7 +23,7 @@ related tasks.
 * GraphQL
 * TypeScript
 
-###Backend:
+### Backend:
 * Node with Express
 * GraphQL
 * TypeScript
