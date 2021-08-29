@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useAddTodoMutation } from '../../generated/graphql';
 
 import { TodoList } from '../../generated/graphql';
-import { auth } from '../../config/firebase';
 
 interface Props {
     id: TodoList["id"],

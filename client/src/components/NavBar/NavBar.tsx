@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import { auth } from "../../config/firebase";
@@ -7,20 +7,16 @@ import { AuthContext } from "../../context/AuthProvider";
 import './NavBar.css'
 
 const NavBar = () => {
-    const [ errorMessage, setErrorMessage ] = useState<string>('');
-
     const currentUser = useContext(AuthContext);
 
     const history = useHistory();
 
     const handleLogout = async (): Promise<void> => {
-        setErrorMessage('');
-
         try {
             await auth.signOut();
             history.push('/login');
         } catch(error) {
-            setErrorMessage(error)
+            console.log(error.message)
         }
     }
 
