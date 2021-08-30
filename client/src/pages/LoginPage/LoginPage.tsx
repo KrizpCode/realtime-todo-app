@@ -31,8 +31,10 @@ export const LoginPage = () => {
             )
             history.push('/');
         } catch (error) {
-            setErrorMessage(error.message);
-            setLoading(false)
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+                setLoading(false)
+            }
         }
     };
 

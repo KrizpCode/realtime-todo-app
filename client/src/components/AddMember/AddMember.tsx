@@ -46,7 +46,9 @@ const AddMember: React.FC<Props> = ({ id }) => {
                 setMessage(`Successfully added ${email} to list`)
             }
         } catch (error) {
-            setErrorMessage(error.message);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
         }
 
         setEmail('');

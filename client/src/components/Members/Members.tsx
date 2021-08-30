@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Members: React.FC<Props> = ({ members, id, admin }) => {
-    const [removeTodo] = useRemoveMemberMutation();
+    const [removeMember] = useRemoveMemberMutation();
     const currentUser = useContext(AuthContext);
 
     if(!members) {
@@ -24,11 +24,11 @@ const Members: React.FC<Props> = ({ members, id, admin }) => {
                 <li key={i} className="members-list__item">
                     <h4 className="members-list__item-text">{member.email}</h4>
                     {admin.email === currentUser?.email
-                        && admin.email !== member.email ?
-                            <button
+                        && admin.email !== member.email
+                            ? <button
                                 className="remove-button"
                                 onClick={(): void => {
-                                    removeTodo({
+                                    removeMember({
                                         variables: {
                                             email: member.email,
                                             id

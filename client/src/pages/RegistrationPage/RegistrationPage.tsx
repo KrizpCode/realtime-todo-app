@@ -36,7 +36,9 @@ export const RegistrationPage = () => {
             )
             history.push('/');
         } catch (error) {
-            setErrorMessage(error.message);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
         }
 
         setLoading(false);

@@ -21,7 +21,9 @@ export const ForgotPasswordPage = () => {
             await auth.sendPasswordResetEmail(emailRef.current!.value)
             setMessage('An email with instructions to reset your password has been sent.')
         } catch (error) {
-            setErrorMessage(error.message);
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            }
         }
 
         setLoading(false);

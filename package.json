@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/KrizpCode/realtime-todo-app/issues"
   },
-  "homepage": "https://github.com/KrizpCode/realtime-todo-app#readme"
+  "homepage": "https://github.com/KrizpCode/realtime-todo-app#readme",
+  "devDependencies": {
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "cypress": "^8.3.1"
+  }
 }

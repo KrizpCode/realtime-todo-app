@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/AuthProvider';
 import { TodoListByEmailQuery } from '../../generated/graphql';
@@ -13,11 +13,6 @@ const TodoLists: React.FC<Props> = ({ todoLists }) => {
     const [removeTodo] = useRemoveTodoListMutation();
 
     const currentUser = useContext(AuthContext);
-    const history = useHistory();
-
-    if (!currentUser) {
-        history.push('/login')
-    }
 
     if(!todoLists) {
         return null;

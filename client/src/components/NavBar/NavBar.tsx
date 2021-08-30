@@ -16,7 +16,9 @@ const NavBar = () => {
             await auth.signOut();
             history.push('/login');
         } catch(error) {
-            console.log(error.message)
+            if (error instanceof Error) {
+                console.log(error.message)
+            }
         }
     }
 
