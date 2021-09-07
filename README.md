@@ -6,6 +6,24 @@ All of the changes within a to-do list happens in realtime, and invited users ca
 For this project I set a goal to learn TypeScript, GraphQL and FireBase.
 If I were to continue developing this app, I would add a database, a way to filter the lists by active/done/all, and add special lists with different special features.
 
+## Instructions to run application
+
+Clone this repo and write in terminal
+````
+cd server
+npm install
+npm run nodemon
+```` 
+Backend is now running on http://localhost:4000/graphql
+
+Create another terminal and write
+````
+cd client
+npm install
+npm start
+```` 
+Server should now be running on http://localhost:3000
+
 ## Link (Refresh if not accessable directly, since it might be in sleep-mode on Heroku)
 https://my-todo-realtime.herokuapp.com/
 
