@@ -22,7 +22,7 @@ cd client
 npm install
 npm start
 ```` 
-Server should now be running on http://localhost:3000
+Application should now be running and accessible on http://localhost:3000
 
 ## Link (Refresh if not accessable directly, since it might be in sleep-mode on Heroku)
 https://my-todo-realtime.herokuapp.com/
