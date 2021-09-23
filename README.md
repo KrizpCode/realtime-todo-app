@@ -24,7 +24,7 @@ npm start
 ```` 
 Application should now be running and accessible on http://localhost:3000
 
-## Link to hosted application (Refresh if not accessable directly, it might be in sleep-mode on Heroku)
+## Link to hosted application
 https://realtime-todo-app.herokuapp.com/
 
 ## Frameworks
